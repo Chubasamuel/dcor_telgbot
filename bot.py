@@ -28,7 +28,7 @@ elif mode == "prod":
         updater.bot.set_webhook("https://{}.herokuapp.com/{}".format(HEROKU_APP_NAME, TOKEN))
 else:
     logger.error("No MODE specified!")
-    sys.exit(1)
+    sys.exit(2)
 
 
 def start_handler(bot, update):
