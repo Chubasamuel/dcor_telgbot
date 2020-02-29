@@ -9,6 +9,8 @@ logging.basicConfig(level=logging.INFO,format="%(asctime)s - %(name)s - %(leveln
 logger = logging.getLogger()
 mode = os.getenv("MODE")
 TOKEN = os.getenv("TOKEN")
+print("Token---->",TOKEN,"\ntype--->",type(TOKEN))
+print("mode---->",mode,"\ntype--->",type(mode))
 if mode == "dev":
     def run(updater):
         updater.start_polling()
