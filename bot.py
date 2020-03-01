@@ -44,11 +44,11 @@ def file_id_gt(bot,update):
     send_doc(file_id_g)
 def file_id_gt2(bot,update):
     file_id_g=update.message.text
-    send_docByUrl(file_id_g)
+    send_docByUrl(bot,update,file_id_g)
 def channel_getBookByUrl():
     txt=update.message.text
     txt=re.sub("@dcorbot\s+","",txt)
-    send_docByUrl(txt)
+    send_docByUrl(bot,update,txt)
 def bop(bot, update):
     url = get_url()
     chat_id = update.message.chat_id
