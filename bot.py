@@ -39,10 +39,10 @@ def send_docByUrl(bot,update,f_id,f_capt):
     r=requests.get(url)
     if r.status_code!=200:
         update.message.reply_text("Sorry, seems no file was found at this url ---> "+f_id)
-def send_docByUrl2(bot,update,f_id):
+def send_docByUrl2(bot,update,f_id,f_capt):
     token=globals()["TOKEN"]
     channel=globals()["channel"]
-    url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&document="+f_id+"&file_name=dcor_Yes.pdf&caption=file_dcor.pdf"
+    url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&document="+f_id+"&caption="+f_capt
     r=requests.get(url)
     if r.status_code!=200:
         errM="Sorry, seems no file was found at this url ---> "+f_id
@@ -72,13 +72,14 @@ def channel_getBookByUrl2(bot,update):
     txtt=re.sub("@dcorbot\s+","",txtt)
     help_getBook2(bot,update,txtt)
 def help_getBook2(bot,update,txt):
+    file_caption=getFilecaption(txt)
     if re.match(r'^https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$',txt):
         send_docByUrl2(bot,update,txt)
     else:
         correctedText=re.search(r"url=https*://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx){1}",txt).group()
         correctedText=re.sub("url=","",correctedText)
         if re.match(r'^https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$',correctedText):
-            send_docByUrl2(bot,update,correctedText)
+            send_docByUrl2(bot,update,correctedText,file_caption)
         else:
             update.message.reply_text("Sorry, seems no file was found at this url ---> "+txt)
 def bop(bot, update):
