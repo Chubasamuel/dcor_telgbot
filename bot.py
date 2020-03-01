@@ -30,19 +30,19 @@ def get_url():
 def send_doc(f_id):
     token=globals()["TOKEN"]
     channel=globals()["channel"]
-    url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&filename=yes_DCOR.pdf&document="+f_id
+    url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&document="+f_id+"&filename=dcor_Yes.pdf&caption=file_dcor.pdf"
     r=requests.post(url,headers={"enctype":"multipart/form-data"})
 def send_docByUrl(bot,update,f_id):
     token=globals()["TOKEN"]
     channel=globals()["channel"]
-    url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&document="+f_id+"&filename=Yes_DCOR.pdf"
+    url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&document="+f_id+"&filename=dcor_Yes.pdf&caption=file_dcor.pdf"
     r=requests.get(url)
     if r.status_code!=200:
         update.message.reply_text("Sorry, seems no file was found at this url ---> "+f_id)
 def send_docByUrl2(bot,update,f_id):
     token=globals()["TOKEN"]
     channel=globals()["channel"]
-    url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&document="+f_id+"&filename=Yes_DCOR.pdf"
+    url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&document="+f_id+"&filename=dcor_Yes.pdf&caption=file_dcor.pdf"
     r=requests.get(url)
     if r.status_code!=200:
         errM="Sorry, seems no file was found at this url ---> "+f_id
