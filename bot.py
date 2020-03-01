@@ -49,6 +49,19 @@ def channel_getBookByUrl():
     txt=update.message.text
     txt=re.sub("@dcorbot\s+","",txt)
     send_docByUrl(bot,update,txt)
+def channel_getBookByUrl2():
+    txt=update.message.text
+    txt=re.sub("@dcorbot\s+","",txt)
+    if re.match(r'^https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$',txt):
+        send_docByUrl(bot,update,txt)
+    else:
+        correctedText=re.match(r"url=https*://.*&$",txt)
+        re.sub("url=","",correctedText)
+        correctedText=correctedText[0:len(correctedText)]
+        if re.match(r'^https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$',correctedText):
+            send_docByUrl(bot,update,correctedText)
+        else:
+            update.message.reply_text("Sorry, seems no file was found at this url ---> "+txt)
 def bop(bot, update):
     url = get_url()
     chat_id = update.message.chat_id
@@ -62,6 +75,7 @@ if __name__ == '__main__':
     dp.add_handler(CommandHandler('bop',bop))
     dp.add_handler(CommandHandler('do',boop))
     dp.add_handler(MessageHandler(Filters.document,file_id_gt))
-    dp.add_handler(MessageHandler(Filters.text&(Filters.entity(MessageEntity.URL)|Filters.entity(MessageEntity.TEXT_LINK)),file_id_gt2))
+    #dp.add_handler(MessageHandler(Filters.text&(Filters.entity(MessageEntity.URL)|Filters.entity(MessageEntity.TEXT_LINK)),file_id_gt2))
     dp.add_handler(MessageHandler(Filters.update.channel_posts&Filters.regex(r'^@dcorbot\s+https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$'),channel_getBookByUrl))
+    dp.add_handler(MessageHandler((Filters.update.channel_posts&Filters.regex(r'^@dcorbot\s+https{0,1}://.+'))|(Filters.regex(r'https*://.+')),channel_getBookByUrl2))
     run(updater)
