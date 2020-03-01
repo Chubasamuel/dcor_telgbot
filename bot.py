@@ -49,7 +49,7 @@ def channel_getBookByUrl():
     txt=update.message.text
     txt=re.sub("@dcorbot\s+","",txt)
     send_docByUrl(bot,update,txt)
-def channel_getBookByUrl2():
+def channel_getBookByUrl2(bot,update):
     txtt=update.message.text
     txtt=re.sub("@dcorbot\s+","",txtt)
     help_getBook2(bot,update,txtt)
