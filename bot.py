@@ -43,9 +43,10 @@ def file_id_gt(bot,update):
 def file_id_gt2(bot,update):
     file_id_g=update.message.text
     send_docByUrl(file_id_g)
-def echo(bot, update):
-    print(update.message.chat_id)
-    print(update.message.text)
+def channel_getBookByUrl():
+    txt=update.message.text
+    txt=re.sub("@dcorbot\s+","",txt)
+    send_docByUrl(txt)
 def bop(bot, update):
     url = get_url()
     chat_id = update.message.chat_id
@@ -60,4 +61,5 @@ if __name__ == '__main__':
     dp.add_handler(CommandHandler('do',boop))
     dp.add_handler(MessageHandler(Filters.document,file_id_gt))
     dp.add_handler(MessageHandler(Filters.text&(Filters.entity(MessageEntity.URL)|Filters.entity(MessageEntity.TEXT_LINK)),file_id_gt2))
+    dp.add_handler(MessageHandler(Filters.update.channel_posts&Filters.regex(r'^@dcorbot\s+https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$'),channel_getBookByUrl))
     run(updater)
