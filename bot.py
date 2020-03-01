@@ -60,6 +60,8 @@ def file_id_gt2(bot,update):
     file_id_g=update.message.text
     if re.match(r'^capt=.+\|\s+https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$',file_id_g):
         file_caption=getFilecaption(bot,update,file_id_g)
+
+        file_id_g=re.search(r"https*://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx){1}",file_id_g).group()
         send_docByUrl(bot,update,file_id_g,file_caption)
     else:
         help_getBook2(bot,update,file_id_g)
