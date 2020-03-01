@@ -44,13 +44,17 @@ def file_id_gt(bot,update):
     send_doc(file_id_g)
 def file_id_gt2(bot,update):
     file_id_g=update.message.text
-    send_docByUrl(bot,update,file_id_g)
-def channel_getBookByUrl():
+    if re.match(r'^https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$',file_id_g):
+        send_docByUrl(bot,update,file_id_g)
+    else:
+        help_getBook2(bot,update,file_id_g)
+def channel_getBookByUrl(bot,update):
     txt=update.message.text
     txt=re.sub("@dcorbot\s+","",txt)
     send_docByUrl(bot,update,txt)
 def channel_getBookByUrl2(bot,update):
-    txtt=update.message.text
+    print(update.channel_post.text,"<----update.cp.text")
+    txtt=update.channel_post.text
     txtt=re.sub("@dcorbot\s+","",txtt)
     help_getBook2(bot,update,txtt)
 def help_getBook2(bot,update,txt):
@@ -76,7 +80,7 @@ if __name__ == '__main__':
     dp.add_handler(CommandHandler('bop',bop))
     dp.add_handler(CommandHandler('do',boop))
     dp.add_handler(MessageHandler(Filters.document,file_id_gt))
-    #dp.add_handler(MessageHandler(Filters.text&(Filters.entity(MessageEntity.URL)|Filters.entity(MessageEntity.TEXT_LINK)),file_id_gt2))
+    dp.add_handler(MessageHandler(Filters.update.message&(Filters.entity(MessageEntity.URL)|Filters.entity(MessageEntity.TEXT_LINK)),file_id_gt2))
     dp.add_handler(MessageHandler(Filters.update.channel_posts&Filters.regex(r'^@dcorbot\s+https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$'),channel_getBookByUrl))
-    dp.add_handler(MessageHandler((Filters.update.channel_posts&Filters.regex(r'^@dcorbot\s+https{0,1}://.+'))|(Filters.regex(r'https*://.+')),channel_getBookByUrl2))
+    dp.add_handler(MessageHandler(Filters.update.channel_posts&Filters.regex(r'^@dcorbot\s+https{0,1}://.+'),channel_getBookByUrl2))
     run(updater)
