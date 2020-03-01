@@ -37,6 +37,8 @@ def send_docByUrl(f_id):
     channel=globals()["channel"]
     url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&document="+f_id
     r=requests.get(url)
+    if r.status_code!=200:
+        update.message.reply_text("Sorry, seems no file was found at this url ---> "+f_id)
 def file_id_gt(bot,update):
     file_id_g=update.message.document.file_id
     send_doc(file_id_g)
