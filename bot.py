@@ -58,7 +58,7 @@ def help_getBook2(bot,update,txt):
         send_docByUrl(bot,update,txt)
     else:
         correctedText=re.search(r"url=https*://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx){1}",txt).group()
-        re.sub("url=","",correctedText)
+        correctedText=re.sub("url=","",correctedText)
         if re.match(r'^https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$',correctedText):
             send_docByUrl(bot,update,correctedText)
         else:
