@@ -72,7 +72,7 @@ def channel_getBookByUrl2(bot,update):
     txtt=re.sub("@dcorbot\s+","",txtt)
     help_getBook2(bot,update,txtt)
 def help_getBook2(bot,update,txt):
-    file_caption=getFilecaption(txt)
+    file_caption=getFilecaption(bot,update,txt)
     if re.match(r'^https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$',txt):
         send_docByUrl2(bot,update,txt)
     else:
