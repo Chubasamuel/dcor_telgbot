@@ -50,12 +50,14 @@ def channel_getBookByUrl():
     txt=re.sub("@dcorbot\s+","",txt)
     send_docByUrl(bot,update,txt)
 def channel_getBookByUrl2():
-    txt=update.message.text
-    txt=re.sub("@dcorbot\s+","",txt)
+    txtt=update.message.text
+    txtt=re.sub("@dcorbot\s+","",txtt)
+    help_getBook2(bot,update,txtt)
+def help_getBook2(bot,update,txt):
     if re.match(r'^https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$',txt):
         send_docByUrl(bot,update,txt)
     else:
-        correctedText=re.match(r"url=https*://.*&$",txt)
+        correctedText=re.match(r"url=https*://.*&$",txt).group()
         re.sub("url=","",correctedText)
         correctedText=correctedText[0:len(correctedText)]
         if re.match(r'^https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$',correctedText):
