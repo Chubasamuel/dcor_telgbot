@@ -32,10 +32,10 @@ def send_doc(f_id):
     channel=globals()["channel"]
     url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&document="+f_id+"&file_name=dcor_Yes.pdf&caption=file_dcor.pdf"
     r=requests.post(url,headers={"enctype":"multipart/form-data"})
-def send_docByUrl(bot,update,f_id):
+def send_docByUrl(bot,update,f_id,f_capt):
     token=globals()["TOKEN"]
     channel=globals()["channel"]
-    url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&document="+f_id+"&file_name=dcor_Yes.pdf&caption=file_dcor.pdf"
+    url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&document="+f_id+"&caption="+f_capt
     r=requests.get(url)
     if r.status_code!=200:
         update.message.reply_text("Sorry, seems no file was found at this url ---> "+f_id)
@@ -48,13 +48,19 @@ def send_docByUrl2(bot,update,f_id):
         errM="Sorry, seems no file was found at this url ---> "+f_id
         url="https://api.telegram.org/bot"+token+"/sendMessage?chat_id="+channel+"&text="+errM
         requests.get(url)
+def getFilecaption(bot,update,f_id):
+    ff=re.match("capt=.+\|\s+",f_id).group().strip()
+    ff=re.sub("capt=","",ff)
+    ff=ff[0:len(ff)-1]
+    return ff
 def file_id_gt(bot,update):
     file_id_g=update.message.document.file_id
     send_doc(file_id_g)
 def file_id_gt2(bot,update):
     file_id_g=update.message.text
-    if re.match(r'^https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$',file_id_g):
-        send_docByUrl(bot,update,file_id_g)
+    if re.match(r'^capt=.+\|\s+https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$',file_id_g):
+        file_caption=getFilecaption(bot,update,file_id_g)
+        send_docByUrl(bot,update,file_id_g,file_caption)
     else:
         help_getBook2(bot,update,file_id_g)
 def channel_getBookByUrl(bot,update):
