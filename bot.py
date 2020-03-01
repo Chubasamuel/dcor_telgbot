@@ -32,7 +32,7 @@ def send_doc(f_id):
     channel=globals()["channel"]
     url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&document="+f_id
     r=requests.post(url,headers={"enctype":"multipart/form-data"})
-def send_docByUrl(f_id):
+def send_docByUrl(bot,update,f_id):
     token=globals()["TOKEN"]
     channel=globals()["channel"]
     url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&document="+f_id
