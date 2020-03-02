@@ -27,10 +27,14 @@ def get_url():
     contents = requests.get('https://random.dog/woof.json').json()
     url = contents['url']
     return url
-def send_doc(f_id):
+def send_doc(f_id,f_capt):
     token=globals()["TOKEN"]
     channel=globals()["channel"]
-    url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&document="+f_id
+    if len(f_capt)>0:
+        part_url="&caption="+f_capt
+    else:
+        part_url=""
+    url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&document="+f_id+part_url
     r=requests.post(url,headers={"enctype":"multipart/form-data"})
 def send_docByUrl(bot,update,f_id,f_capt):
     token=globals()["TOKEN"]
@@ -55,7 +59,11 @@ def getFilecaption(bot,update,f_id):
     return ff
 def file_id_gt(bot,update):
     file_id_g=update.message.document.file_id
-    send_doc(file_id_g)
+    if update.message.caption:
+        send_doc(file_id_g,update.message.caption)
+    else:
+        update.message.reply_text("No caption set.\nSending "+update.message.document.file_name+" without caption...")
+        send_doc(file_id_g,"")
 def file_id_gt2(bot,update):
     file_id_g=update.message.text
     if re.match(r'^capt=.+\|\s+https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$',file_id_g):
@@ -92,12 +100,14 @@ def bop(bot, update):
     bot.send_photo(chat_id=chat_id, photo=url)
 def boop(bot,update):
     update.message.reply_text("Wait I don't know what to do yet")
+def cEcho(bot,update):                                    pass
 if __name__ == '__main__':
     logger.info("Starting bot")
     updater = Updater(TOKEN)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler('bop',bop))
     dp.add_handler(CommandHandler('do',boop))
+    dp.add_handler(MessageHandler(Filters.update.channel_post,cEcho))
     dp.add_handler(MessageHandler(Filters.document,file_id_gt))
     dp.add_handler(MessageHandler(Filters.update.message&(Filters.entity(MessageEntity.URL)|Filters.entity(MessageEntity.TEXT_LINK)),file_id_gt2))
     dp.add_handler(MessageHandler(Filters.update.channel_posts&Filters.regex(r'^@dcorbot\s+capt=.+\|\s+https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$'),channel_getBookByUrl))
