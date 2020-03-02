@@ -30,7 +30,7 @@ def get_url():
 def send_doc(f_id):
     token=globals()["TOKEN"]
     channel=globals()["channel"]
-    url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&document="+f_id+"&file_name=dcor_Yes.pdf&caption=file_dcor.pdf"
+    url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&document="+f_id
     r=requests.post(url,headers={"enctype":"multipart/form-data"})
 def send_docByUrl(bot,update,f_id,f_capt):
     token=globals()["TOKEN"]
@@ -68,7 +68,9 @@ def file_id_gt2(bot,update):
 def channel_getBookByUrl(bot,update):
     txt=update.message.text
     txt=re.sub("@dcorbot\s+","",txt)
-    send_docByUrl(bot,update,txt)
+    file_caption=getFilecaption(bot,update,txt)
+    txt=re.search(r"https*://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx){1}",txt).group()
+    send_docByUrl(bot,update,txt,file_caption)
 def channel_getBookByUrl2(bot,update):
     txtt=update.channel_post.text
     txtt=re.sub("@dcorbot\s+","",txtt)
@@ -76,7 +78,7 @@ def channel_getBookByUrl2(bot,update):
 def help_getBook2(bot,update,txt):
     file_caption=getFilecaption(bot,update,txt)
     if re.match(r'^https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$',txt):
-        send_docByUrl2(bot,update,txt)
+        send_docByUrl2(bot,update,txt,file_caption)
     else:
         correctedText=re.search(r"url=https*://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx){1}",txt).group()
         correctedText=re.sub("url=","",correctedText)
@@ -89,7 +91,7 @@ def bop(bot, update):
     chat_id = update.message.chat_id
     bot.send_photo(chat_id=chat_id, photo=url)
 def boop(bot,update):
-    update.message.reply_text("Wait I don't know anything yet")
+    update.message.reply_text("Wait I don't know what to do yet")
 if __name__ == '__main__':
     logger.info("Starting bot")
     updater = Updater(TOKEN)
@@ -98,6 +100,6 @@ if __name__ == '__main__':
     dp.add_handler(CommandHandler('do',boop))
     dp.add_handler(MessageHandler(Filters.document,file_id_gt))
     dp.add_handler(MessageHandler(Filters.update.message&(Filters.entity(MessageEntity.URL)|Filters.entity(MessageEntity.TEXT_LINK)),file_id_gt2))
-    dp.add_handler(MessageHandler(Filters.update.channel_posts&Filters.regex(r'^@dcorbot\s+https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$'),channel_getBookByUrl))
-    dp.add_handler(MessageHandler(Filters.update.channel_posts&Filters.regex(r'^@dcorbot\s+https{0,1}://.+'),channel_getBookByUrl2))
+    dp.add_handler(MessageHandler(Filters.update.channel_posts&Filters.regex(r'^@dcorbot\s+capt=.+\|\s+https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx)$'),channel_getBookByUrl))
+    dp.add_handler(MessageHandler(Filters.update.channel_posts&Filters.regex(r'^@dcorbot\s+capt=.+\|\s+https{0,1}://.+'),channel_getBookByUrl2))
     run(updater)
