@@ -50,8 +50,11 @@ def send_docByUrl2(bot,update,f_id,f_capt):
     r=requests.get(url)
     if r.status_code!=200:
         errM="Sorry, seems no file was found at this url ---> "+f_id
-        url="https://api.telegram.org/bot"+token+"/sendMessage?chat_id="+channel+"&text="+errM
-        requests.get(url)
+        try:
+            update.message.reply_text(errM)
+        except:
+            url="https://api.telegram.org/bot"+token+"/sendMessage?chat_id="+channel+"&text="+errM
+            requests.get(url)
 def getFilecaption(bot,update,f_id):
     ff=re.match("capt=.+\|\s+",f_id).group().strip()
     ff=re.sub("capt=","",ff)
