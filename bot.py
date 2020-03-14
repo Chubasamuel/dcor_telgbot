@@ -49,7 +49,7 @@ def send_docByUrl2(bot,update,f_id,f_capt):
     url="https://api.telegram.org/bot"+token+"/sendDocument?chat_id="+channel+"&document="+f_id+"&caption="+f_capt
     r=requests.get(url)
     if r.status_code!=200:
-        errM="Sorry, seems no file was found at this url ---> "+f_id+"----"+str(update)
+        errM="Sorry, seems no file was found at this url ---> "+f_id+"----"+str(bot.getUpdates()[-1])
         try:
             update.message.reply_text(errM)
         except:
