@@ -119,8 +119,7 @@ def showHelp(bot,update):
     msg+="or e.g\n   capt=Anatomy Text| http://book.bk/jdjdhhdnd/anatomy.pdf/jdjdjjdeojrnfnf"
     update.message.reply_text(msg)
 def cAll(bot,update):
-    #update.message.reply_text(str(update))
-    update.message.reply_text("Prev--------->>^>"+str(bot.getUpdates()[-1]))
+    update.message.reply_text(str(update))    
 if __name__ == '__main__':
     logger.info("Starting bot")
     updater = Updater(TOKEN)
