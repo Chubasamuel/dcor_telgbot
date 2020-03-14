@@ -90,9 +90,9 @@ def help_getBook2(bot,update,txt):
     file_caption=getFilecaption(bot,update,txt)
     if re.match(r'^https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx|epub)$',txt):
         send_docByUrl2(bot,update,txt,file_caption)
-    elif re.search(r'https*://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx|epub).*',txt).group() and not "url=http" in txt:
+    elif re.search(r'https*://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx|epub).*',txt) and not "url=http" in txt:
         send_docByUrl2(bot,update,txt,file_caption)
-    elif re.search(r'https*://t\.me.+',txt).group():
+    elif re.search(r'https*://t\.me.+',txt):
         send_docByUrl2(bot,update,txt,file_caption)
     else:
         correctedText=re.search(r"url=https*://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx|epub){1}",txt).group()
