@@ -62,6 +62,7 @@ def getFilecaption(bot,update,f_id):
     return ff
 def file_id_gt(bot,update):
     file_id_g=update.message.document.file_id
+    update.message.reply_text(str(update))
     if update.message.caption:
         send_doc(file_id_g,update.message.caption)
     else:
