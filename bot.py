@@ -109,7 +109,7 @@ def boop(bot,update):
     update.message.reply_text("Wait I don't know what to do yet")
 def cEcho(bot,update):                                    pass
 def startBot(bot,update):
-    msg="Hey, Good to meet you.\nWelcome To DCOR Telegram Bot.\nDesigned by Chuba Samuel,DCOR,\nI am meant to help you send medical resources to the medical library.\nEnter the /help command to see available helps"
+    msg="Hey, Good to meet you.\nWelcome To DCOR Telegram Bot.\nDesigned by Chuba Samuel,DCOR.\nI am meant to help you send medical resources to the medical library.\nEnter the /help command to see available helps"
     update.message.reply_text(msg)
 def showHelp(bot,update):
     msg="Welcome\nEnter /bop command to get cool random dog pictures.\nEnter /help command to see this help again\n"
@@ -118,8 +118,12 @@ def showHelp(bot,update):
     msg+="e.g\n   capt=Paediatric Textbook 4th Ed. | https://www.xz.bxxbbd.didj/jdjjf/paed.pdf\n"
     msg+="or e.g\n   capt=Anatomy Text| http://book.bk/jdjdhhdnd/anatomy.pdf/jdjdjjdeojrnfnf"
     update.message.reply_text(msg)
-def cAll(bot,update):
-    update.message.reply_text("---Gotten and Noted---")    
+def send_tegFileWithCapt(bot,update):
+    upt=str(update)
+    if re.search(r".*document.+",upt)and re.search(r".*file_id.+",upt) and re.search(r".*file_name.+",upt):
+        send_docByUrl(bot,update,update.message.document.file_id,update.message.text)
+    else:
+        update.message.reply_text("Couldn\'t process command for "+str(update.message.text))
 if __name__ == '__main__':
     logger.info("Starting bot")
     updater = Updater(TOKEN)
@@ -130,8 +134,8 @@ if __name__ == '__main__':
     dp.add_handler(CommandHandler('start',startBot))
     dp.add_handler(MessageHandler(Filters.update.channel_post,cEcho))
     #dp.add_handler(MessageHandler(Filters.regex(r".*file_name.+")&Filters.regex(r".*file_id.+")&Filters.regex(r".*document.+")&Filters.regex(r".*text.+"),cAll))
-    dp.add_handler(MessageHandler(Filters.document,file_id_gt))
-    dp.add_handler(MessageHandler(Filters.reply,cAll))
+   # dp.add_handler(MessageHandler(Filters.document,file_id_gt))
+    dp.add_handler(MessageHandler(Filters.reply&Filters.update.message,send_tegFileWithCapt))
     dp.add_handler(MessageHandler(Filters.update.message&(Filters.entity(MessageEntity.URL)|Filters.entity(MessageEntity.TEXT_LINK)),file_id_gt2))
     dp.add_handler(MessageHandler(Filters.update.channel_posts&Filters.regex(r'^@dcorbot\s+capt=.+\|\s+https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx|epub)$'),channel_getBookByUrl))
     dp.add_handler(MessageHandler(Filters.update.channel_posts&Filters.regex(r'^@dcorbot\s+capt=.+\|\s+https{0,1}://.+'),channel_getBookByUrl2))
