@@ -117,6 +117,8 @@ def showHelp(bot,update):
     msg+="\nTo send a resource through a link just type\n capt=The caption of the file| followed by the link\n"
     msg+="e.g\n   capt=Paediatric Textbook 4th Ed. | https://www.xz.bxxbbd.didj/jdjjf/paed.pdf\n"
     msg+="or e.g\n   capt=Anatomy Text| http://book.bk/jdjdhhdnd/anatomy.pdf/jdjdjjdeojrnfnf"
+    msg+="\n\nTo send a file already on Telegram, forward the file here and then reply the file with the desired file caption"
+    msg+="\n\nTo send a file from your computer, upload the file here, then reply the file with the desired file caption"
     update.message.reply_text(msg)
 def send_tegFileWithCapt(bot,update):
     upt=str(update)
@@ -133,8 +135,7 @@ if __name__ == '__main__':
     dp.add_handler(CommandHandler('help',showHelp))
     dp.add_handler(CommandHandler('start',startBot))
     dp.add_handler(MessageHandler(Filters.update.channel_post,cEcho))
-    #dp.add_handler(MessageHandler(Filters.regex(r".*file_name.+")&Filters.regex(r".*file_id.+")&Filters.regex(r".*document.+")&Filters.regex(r".*text.+"),cAll))
-   # dp.add_handler(MessageHandler(Filters.document,file_id_gt))
+    dp.add_handler(MessageHandler(Filters.document,file_id_gt))
     dp.add_handler(MessageHandler(Filters.reply&Filters.update.message,send_tegFileWithCapt))
     dp.add_handler(MessageHandler(Filters.update.message&(Filters.entity(MessageEntity.URL)|Filters.entity(MessageEntity.TEXT_LINK)),file_id_gt2))
     dp.add_handler(MessageHandler(Filters.update.channel_posts&Filters.regex(r'^@dcorbot\s+capt=.+\|\s+https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx|epub)$'),channel_getBookByUrl))
