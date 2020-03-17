@@ -121,7 +121,7 @@ def showHelp(bot,update):
 def send_tegFileWithCapt(bot,update):
     upt=str(update)
     if re.search(r".*document.+",upt)and re.search(r".*file_id.+",upt) and re.search(r".*file_name.+",upt):
-        send_docByUrl(bot,update,update.message.document.file_id,update.message.text)
+        send_docByUrl(bot,update,update.message.reply_to_message.document.file_id,update.message.text)
     else:
         update.message.reply_text("Couldn\'t process command for "+str(update.message.text))
 if __name__ == '__main__':
