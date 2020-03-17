@@ -119,7 +119,7 @@ def showHelp(bot,update):
     msg+="or e.g\n   capt=Anatomy Text| http://book.bk/jdjdhhdnd/anatomy.pdf/jdjdjjdeojrnfnf"
     update.message.reply_text(msg)
 def cAll(bot,update):
-    update.message.reply_text(str(update))    
+    update.message.reply_text("---Gotten and Noted---")    
 if __name__ == '__main__':
     logger.info("Starting bot")
     updater = Updater(TOKEN)
@@ -129,7 +129,7 @@ if __name__ == '__main__':
     dp.add_handler(CommandHandler('help',showHelp))
     dp.add_handler(CommandHandler('start',startBot))
     dp.add_handler(MessageHandler(Filters.update.channel_post,cEcho))
-    dp.add_handler(MessageHandler(Filters.all,cAll))
+    dp.add_handler(MessageHandler(Filters.update.message.document&Filters.update.message.text,cAll))
     dp.add_handler(MessageHandler(Filters.document,file_id_gt))
     dp.add_handler(MessageHandler(Filters.update.message&(Filters.entity(MessageEntity.URL)|Filters.entity(MessageEntity.TEXT_LINK)),file_id_gt2))
     dp.add_handler(MessageHandler(Filters.update.channel_posts&Filters.regex(r'^@dcorbot\s+capt=.+\|\s+https{0,1}://.+(pdf|ppt|xls|xlsx|html|pptx|txt|doc|docx|epub)$'),channel_getBookByUrl))
